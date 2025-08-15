@@ -16,10 +16,22 @@
 
 IPTV 工具箱， `Docker` 部署，支持 **EPG 管理**、**直播源管理**、**台标管理**，兼容 **DIYP/百川**、 **超级直播**以及 **xmltv** 格式。
 
+> [!TIP]
+> ⚠️ 使用前请仔细阅读「管理页面」底部的[「使用说明」](/epg/assets/html/readme.md)
+> 
+> 原贴：[【IPTV工具箱】EPG节目单管理、直播源管理、台标管理](https://www.right.com.cn/forum/thread-8386320-1-1.html)
+> 
+> `xmltv` 用户使用方法：[【一键生成】匹配 M3U 文件的 XML 节目单](https://www.right.com.cn/forum/thread-8392662-1-1.html) 
+>
+> `直播源管理` 使用方法：[【IPTV工具箱】直播源管理使用说明](https://www.right.com.cn/forum/thread-8417162-1-1.html) 
+>
+> `自定数据源` 使用方法：[【IPTV工具箱】自定义数据源（timetv、51livetv、diyp）](https://www.right.com.cn/forum/thread-8432214-1-1.html)
+
+
 ## 💻 主要功能
 
 📡 **多格式**：支持返回 DIYP/百川、超级直播以及 xmltv 格式文件。
-  
+
 🐳 **多架构**：提供 amd64、arm64 和 armv7 架构的 Docker 镜像。
 
 📦 **小体积镜像**：基于 Alpine 构建，压缩后仅 20 MB。
@@ -45,17 +57,6 @@ IPTV 工具箱， `Docker` 部署，支持 **EPG 管理**、**直播源管理**�
 🛠️ **文件管理**：集成 tinyfilemanager 文件管理器。
 
 🌐 **界面设置**：包含简单易用的网页设置页面，便于操作和管理。
-
-> [!TIP]
-> ⚠️ 使用前请仔细阅读「管理页面」底部的[「使用说明」](/epg/assets/html/readme.md)
-> 
-> 原贴：[【IPTV工具箱】EPG节目单管理、直播源管理、台标管理](https://www.right.com.cn/forum/thread-8386320-1-1.html)
-> 
-> `xmltv` 用户使用方法：[【一键生成】匹配 M3U 文件的 XML 节目单](https://www.right.com.cn/forum/thread-8392662-1-1.html) 
->
-> `直播源管理` 使用方法：[【IPTV工具箱】直播源管理使用说明](https://www.right.com.cn/forum/thread-8417162-1-1.html) 
->
-> `自定数据源` 使用方法：[【IPTV工具箱】自定义数据源（timetv、51livetv、diyp）](https://www.right.com.cn/forum/thread-8432214-1-1.html)
 
 <picture>
   <source
@@ -227,15 +228,15 @@ docker run -d --name php-epg-update -v /var/run/docker.sock:/var/run/docker.sock
 <picture>
   <source
     media="(prefers-color-scheme: dark)"
-    srcset="https://api.star-history.com/svg?repos=taksssss/EPG-Server&type=Date&theme=dark"
+    srcset="https://api.star-history.com/svg?repos=taksssss/iptv-tool&type=Date&theme=dark"
   />
   <source
     media="(prefers-color-scheme: light)"
-    srcset="https://api.star-history.com/svg?repos=taksssss/EPG-Server&type=Date"
+    srcset="https://api.star-history.com/svg?repos=taksssss/iptv-tool&type=Date"
   />
   <img
     alt="Star History Chart"
-    src="https://api.star-history.com/svg?repos=taksssss/EPG-Server&type=Date"
+    src="https://api.star-history.com/svg?repos=taksssss/iptv-tool&type=Date"
   />
 </picture>
 

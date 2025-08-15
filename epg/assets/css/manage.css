@@ -57,7 +57,7 @@ textarea[id="channel_mappings"] {
 }
 
 textarea[id="gen_list_text"] {
-    min-height: 155px;
+    min-height: 147px;
 }
 
 textarea[id="sourceUrlTextarea"] {
@@ -248,7 +248,7 @@ input[type="tel"] {
 
 .cron-log-modal-content,
 .more-live-setting-modal-content {
-    width: 450px;
+    width: 550px;
 }
 
 .update-log-modal-content, 

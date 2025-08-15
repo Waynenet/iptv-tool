@@ -49,6 +49,7 @@
     "user_agent": "",
     "user_agent_range": 0,
     "default_icon": "",
+    "target_time_zone": 0,
     "ip_list_mode": 0,
     "check_update": 1,
     "debug_mode": 0,

@@ -12,7 +12,7 @@ document.getElementById('settingsForm').addEventListener('submit', function(even
 
     const fields = ['update_config', 'gen_xml', 'include_future_only', 'ret_default', 'cht_to_chs', 
         'db_type', 'mysql_host', 'mysql_dbname', 'mysql_username', 'mysql_password', 'cached_type', 'gen_list_enable', 
-        'check_update', 'token_range', 'user_agent_range', 'debug_mode', 'ip_list_mode', 'live_source_config', 
+        'check_update', 'token_range', 'user_agent_range', 'debug_mode', 'target_time_zone', 'ip_list_mode', 'live_source_config', 
         'live_template_enable', 'live_fuzzy_match', 'live_url_comment', 'live_tvg_logo_enable', 'live_tvg_id_enable', 
         'live_tvg_name_enable', 'live_source_auto_sync', 'live_channel_name_process', 'gen_live_update_time', 
         'm3u_icon_first', 'check_ipv6', 'min_resolution_width', 'min_resolution_height', 'urls_limit','sort_by_delay', 
@@ -1223,13 +1223,18 @@ function cleanUnusedSource() {
 }
 
 // 显示直播源地址
-function showLiveUrl(token, serverUrl, tokenRange) {
+function showLiveUrl(token, serverUrl, tokenRange, modRewrite) {
     const config = document.getElementById('live_source_config').value;
-    const tokenStr = (tokenRange == 1 || tokenRange == 3) ? `token=${token}&` : '';
+    const tokenStr = (tokenRange == 1 || tokenRange == 3) ? `token=${token}` : '';
     const urlParam = (config === 'default') ? '' : `url=${config}`;
-    const query = [tokenStr.slice(0, -1), urlParam].filter(Boolean).join('&');
-    const m3uUrl = `${serverUrl}/tv.m3u${query ? '?' + query : ''}`;
-    const txtUrl = `${serverUrl}/tv.txt${query ? '?' + query : ''}`;
+    const query = [tokenStr, urlParam].filter(Boolean).join('&');
+
+    const m3uPath = modRewrite ? '/tv.m3u' : '/index.php?type=m3u';
+    const txtPath = modRewrite ? '/tv.txt' : '/index.php?type=txt';
+
+    const m3uUrl = `${serverUrl}${m3uPath}${modRewrite && query ? '?' + query : (!modRewrite && query ? '&' + query : '')}`;
+    const txtUrl = `${serverUrl}${txtPath}${modRewrite && query ? '?' + query : (!modRewrite && query ? '&' + query : '')}`;
+
     const message = 
         `M3U：<br><a href="${m3uUrl}" target="_blank">${m3uUrl}</a>&ensp;<a href="${m3uUrl}" download="tv.m3u">下载</a><br>` +
         `TXT：<br><a href="${txtUrl}" target="_blank">${txtUrl}</a>&ensp;<a href="${txtUrl}" download="tv.txt">下载</a><br>`;
@@ -1720,24 +1725,33 @@ function updateTokenUA(type) {
 }
 
 // token_range 更变后进行提示
-function showTokenRangeMessage(token, serverUrl) {
+function showTokenRangeMessage(token, serverUrl, modRewrite) {
     var tokenRange = document.getElementById("token_range").value;
     var message = '';
     token = token.split('\n')[0];
+
     if (tokenRange == "1" || tokenRange == "3") {
-        message += `直播源地址：<br><a href="${serverUrl}/tv.m3u?token=${token}" target="_blank">${serverUrl}/tv.m3u?token=${token}</a><br>
-                    <a href="${serverUrl}/tv.txt?token=${token}" target="_blank">${serverUrl}/tv.txt?token=${token}</a>`;
+        const m3u = modRewrite ? `${serverUrl}/tv.m3u?token=${token}` : `${serverUrl}/index.php?type=m3u&token=${token}`;
+        const txt = modRewrite ? `${serverUrl}/tv.txt?token=${token}` : `${serverUrl}/index.php?type=txt&token=${token}`;
+        message += `直播源地址：<br><a href="${m3u}" target="_blank">${m3u}</a><br>
+                    <a href="${txt}" target="_blank">${txt}</a>`;
     }
+
     if (tokenRange == "2" || tokenRange == "3") {
         if (message) message += '<br>';
         message += `EPG地址：<br><a href="${serverUrl}/index.php?token=${token}" target="_blank">${serverUrl}/index.php?token=${token}</a><br>
                     <a href="${serverUrl}/t.xml?token=${token}" target="_blank">${serverUrl}/t.xml?token=${token}</a><br>
                     <a href="${serverUrl}/t.xml.gz?token=${token}" target="_blank">${serverUrl}/t.xml.gz?token=${token}</a>`;
     }
+
     if (message) {
         showMessageModal(message);
     }
-    document.getElementById('showLiveUrlBtn').setAttribute('onclick', `showLiveUrl('${token}', '${serverUrl}', '${tokenRange}')`);
+
+    document.getElementById('showLiveUrlBtn').setAttribute(
+        'onclick',
+        `showLiveUrl('${token}', '${serverUrl}', '${tokenRange}', ${modRewrite})`
+    );
 }
 
 // 监听 debug_mode 更变

@@ -96,7 +96,11 @@ function updateConfigFields() {
     }, ARRAY_FILTER_USE_KEY));
     
     foreach ($config_keys as $key) {
-        ${$key} = is_numeric($_POST[$key]) ? intval($_POST[$key]) : $_POST[$key];
+        if ($key === 'target_time_zone') {
+            ${$key} = ($_POST[$key] === '0') ? 0 : $_POST[$key];
+        } else {
+            ${$key} = is_numeric($_POST[$key]) ? intval($_POST[$key]) : $_POST[$key];
+        }
     }
 
     // 处理 URL 列表和频道别名
@@ -538,7 +542,7 @@ try {
                 }
 
                 $localFile = 'data/CHANGELOG.md';
-                $url = 'https://gitee.com/taksssss/EPG-Server/raw/main/CHANGELOG.md';
+                $url = 'https://gitee.com/taksssss/iptv-tool/raw/main/CHANGELOG.md';
                 $isUpdated = false;
                 $updateMessage = '';
                 if ($checkUpdate) {
@@ -973,6 +977,12 @@ try {
     }
 } catch (Exception $e) {
     // 处理数据库连接错误
+}
+
+// 判断 mod_rewrite 是否生效
+$modRewrite = false;
+if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {
+    $modRewrite = true;
 }
 
 // 生成配置管理表单

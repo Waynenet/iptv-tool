@@ -121,39 +121,41 @@ function initialDB() {
     }
 }
 
-// 获取处理后的频道名：$t2s参数表示繁简转换，默认false
+// 获取处理后的频道名：$t2s参数表示是否进行繁转简，默认 false
 function cleanChannelName($channel, $t2s = false) {
     global $Config;
-    $channel_ori = $channel;
-    
-    // 频道忽略字符，默认空格跟 -
-    $chars = array_map('trim', explode(',', $Config['channel_ignore_chars'] ?? "&nbsp, -"));
-    $ignore_chars = str_replace('&nbsp', ' ', $chars);
-    $channel = str_replace($ignore_chars, '', $channel);
 
-    // 频道映射，优先级最高，支持正则表达式和多对一映射
+    if ($channel === '') {
+        return '';
+    }
+
+    // 获取忽略字符，默认包含空格和 "-"
+    $ignoreChars = str_replace('&nbsp', ' ', array_map('trim', explode(',', $Config['channel_ignore_chars'] ?? '&nbsp, -')));
+    $normalizedChannel = str_replace($ignoreChars, '', $channel);
+
+    // 优先使用频道映射（支持正则）
     foreach ($Config['channel_mappings'] as $replace => $search) {
         if (strpos($search, 'regex:') === 0) {
             $pattern = substr($search, 6);
-            if (preg_match($pattern, $channel_ori)) {
-                return strtoupper(preg_replace($pattern, $replace, $channel_ori));
+            if (preg_match($pattern, $channel)) {
+                return strtoupper(preg_replace($pattern, $replace, $channel));
             }
         } else {
-            // 普通映射，可能为多对一
             $channels = array_map('trim', explode(',', $search));
             foreach ($channels as $singleChannel) {
-                if (strcasecmp($channel, str_replace($ignore_chars, '', $singleChannel)) === 0) {
+                if (strcasecmp($normalizedChannel, str_replace($ignoreChars, '', $singleChannel)) === 0) {
                     return strtoupper($replace);
                 }
             }
         }
     }
 
-    // 默认不进行繁简转换
+    // 繁体转简体（如启用）
     if ($t2s) {
-        $channel = t2s($channel);
+        $normalizedChannel = t2s($normalizedChannel);
     }
-    return strtoupper($channel);
+
+    return strtoupper($normalizedChannel);
 }
 
 // 繁体转简体
@@ -540,7 +542,7 @@ function doParseSourceInfo($urlLine = null, $parseAll = false) {
                 $parts = explode(',', $urlContentLine);
             
                 if (count($parts) >= 2) {
-                    if ($parts[1] === '#genre#') {
+                    if (stripos($parts[1], '#genre#') !== false) {
                         $groupTitle = trim($parts[0]); // 更新 group-title
                         continue;
                     }

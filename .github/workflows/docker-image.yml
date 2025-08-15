@@ -32,8 +32,7 @@ jobs:
         id: get_tags
         run: |
           DATE_TAG=$(date +"%y.%m") # 生成当前月份的标签，如24.08
-          TAGS=$(curl -s -H "Authorization: Bearer ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" \
-          "https://hub.docker.com/v2/repositories/wayne3301/php-epg/tags/?page_size=100" | jq -r '.results[].name') # 获取 Docker Hub 中现有的标签
+          TAGS=$(curl -s "https://hub.docker.com/v2/repositories/wayne3301/php-epg/tags/?page_size=100" | jq -r '.results[].name') # 获取 Docker Hub 中现有的标签
           COUNT=0
           for tag in $TAGS; do
             if [[ $tag == $DATE_TAG* ]]; then

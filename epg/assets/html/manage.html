@@ -38,7 +38,7 @@
         <label for="xml_urls">【EPG地址】</label>
         <span class="blue-span" id="channelbind" onclick="showModal('channelbindepg')">（频道指定源）</span>
         <br><br>
-        <textarea id="xml_urls" name="xml_urls"><?php echo implode("\n", array_map('trim', $Config['xml_urls'])); ?></textarea>
+        <textarea id="xml_urls" name="xml_urls"><?= implode("\n", array_map('trim', $Config['xml_urls'])); ?></textarea>
         <br><br>
 
         <div class="form-row">
@@ -51,26 +51,26 @@
         <div class="form-row">
             <select id="days_to_keep" name="days_to_keep" required>
                 <?php for ($i = 1; $i <= 30; $i++): ?>
-                    <option value="<?php echo $i; ?>" <?php echo $Config['days_to_keep'] == $i ? 'selected' : ''; ?>>
-                        <?php echo $i; ?>
+                    <option value="<?= $i; ?>" <?= $Config['days_to_keep'] == $i ? 'selected' : ''; ?>>
+                        <?= $i; ?>
                     </option>
                 <?php endfor; ?>
             </select>
-            <input type="time" id="start_time" name="start_time" value="<?php echo $Config['start_time']; ?>" required>
-            <input type="time" id="end_time" name="end_time" value="<?php echo $Config['end_time']; ?>" required>
+            <input type="time" id="start_time" name="start_time" value="<?= $Config['start_time']; ?>" required>
+            <input type="time" id="end_time" name="end_time" value="<?= $Config['end_time']; ?>" required>
 
             <!-- Interval Time Controls -->
             <select id="interval_hour" name="interval_hour" required>
                 <?php for ($h = 0; $h < 24; $h++): ?>
-                    <option value="<?php echo $h; ?>" <?php echo floor($Config['interval_time'] / 3600) == $h ? 'selected' : ''; ?>>
-                        <?php echo $h; ?>
+                    <option value="<?= $h; ?>" <?= floor($Config['interval_time'] / 3600) == $h ? 'selected' : ''; ?>>
+                        <?= $h; ?>
                     </option>
                 <?php endfor; ?>
             </select> 小时
             <select id="interval_minute" name="interval_minute" required>
                 <?php for ($m = 0; $m < 60; $m++): ?>
-                    <option value="<?php echo $m; ?>" <?php echo (intval($Config['interval_time']) % 3600) / 60 == $m ? 'selected' : ''; ?>>
-                        <?php echo $m; ?>
+                    <option value="<?= $m; ?>" <?= (intval($Config['interval_time']) % 3600) / 60 == $m ? 'selected' : ''; ?>>
+                        <?= $m; ?>
                     </option>
                 <?php endfor; ?>
             </select> 分钟
@@ -100,7 +100,7 @@
             <button type="button" onclick="showModal('cron')">定时日志</button>
             <button type="button" onclick="showModal('update')">更新日志</button>
             <button type="button" id="accessLogBtn" onclick="showAccessLogModal()" 
-                style="display: <?php echo (@$Config['debug_mode'] == 1) ? 'inline-block' : 'none'; ?>;">
+                style="display: <?= (@$Config['debug_mode'] == 1) ? 'inline-block' : 'none'; ?>;">
                 访问日志
             </button>
             <button type="button" onclick="showModal('moresetting')">更多设置</button>
@@ -348,10 +348,10 @@
     <div class="modal-content mysql-config-modal-content" style="width:275px">
         <span class="close">&times;</span>
         <h2>MySQL 配置</h2><br>
-        <div><label>地址：<input type="text" id="mysql_host" value="<?php echo $Config['mysql']['host'] ?? ''; ?>" style="width:200px"></label></div>
-        <div><label>库名：<input type="text" id="mysql_dbname" value="<?php echo $Config['mysql']['dbname'] ?? ''; ?>" style="width:200px"></label></div>
-        <div><label>用户：<input type="text" id="mysql_username" value="<?php echo $Config['mysql']['username'] ?? ''; ?>" style="width:200px"></label></div>
-        <div><label>密码：<input type="text" id="mysql_password" value="<?php echo $Config['mysql']['password'] ?? ''; ?>" style="width:200px"></label></div>
+        <div><label>地址：<input type="text" id="mysql_host" value="<?= $Config['mysql']['host'] ?? ''; ?>" style="width:200px"></label></div>
+        <div><label>库名：<input type="text" id="mysql_dbname" value="<?= $Config['mysql']['dbname'] ?? ''; ?>" style="width:200px"></label></div>
+        <div><label>用户：<input type="text" id="mysql_username" value="<?= $Config['mysql']['username'] ?? ''; ?>" style="width:200px"></label></div>
+        <div><label>密码：<input type="text" id="mysql_password" value="<?= $Config['mysql']['password'] ?? ''; ?>" style="width:200px"></label></div>
         <br>
         <div><button type="button" onclick="mysqlConfigModal.style.display='none';updateConfig()">保存配置</button></div>
     </div>
@@ -362,9 +362,9 @@
     <div class="modal-content redis-config-modal-content" style="width:275px">
         <span class="close">&times;</span>
         <h2>Redis 配置</h2><br>
-        <div><label>地址：<input type="text" id="redis_host" placeholder="127.0.0.1" value="<?php echo $Config['redis']['host'] ?? ''; ?>" style="width:200px"></label></div>
-        <div><label>端口：<input type="text" id="redis_port" placeholder="6379" value="<?php echo $Config['redis']['port'] ?? ''; ?>" style="width:200px"></label></div>
-        <div><label>密码：<input type="text" id="redis_password" value="<?php echo $Config['redis']['password'] ?? ''; ?>" style="width:200px"></label></div>
+        <div><label>地址：<input type="text" id="redis_host" placeholder="127.0.0.1" value="<?= $Config['redis']['host'] ?? ''; ?>" style="width:200px"></label></div>
+        <div><label>端口：<input type="text" id="redis_port" placeholder="6379" value="<?= $Config['redis']['port'] ?? ''; ?>" style="width:200px"></label></div>
+        <div><label>密码：<input type="text" id="redis_password" value="<?= $Config['redis']['password'] ?? ''; ?>" style="width:200px"></label></div>
         <br>
         <div><button type="button" onclick="redisConfigModal.style.display='none';saveAndTestRedisConfig()">保存配置</button></div>
     </div>
@@ -393,7 +393,7 @@
             <input type="file" name="liveSourceFile" id="liveSourceFile" style="display: none;" accept=".m3u, .txt">
             <button id="uploadSourceBtn" onclick="document.getElementById('liveSourceFile').click()">上传源</button>
             <button id="parseSourceInfoBtn" onclick="parseSourceInfo()">解析源</button>
-            <button id="showLiveUrlBtn" onclick="showLiveUrl(`<?php echo strtok($Config['token'], PHP_EOL); ?>`, `<?php echo $serverUrl; ?>`, `<?php echo $Config['token_range']; ?>`)">访问地址</button>
+            <button id="showLiveUrlBtn" onclick="showLiveUrl(`<?= strtok($Config['token'], PHP_EOL) ?>`, `<?= $serverUrl ?>`, `<?= $Config['token_range'] ?>`, `<?= $modRewrite ?>`)">访问地址</button>
             <button id="showLiveTemplateBtn" onclick="showLiveTemplate()">源模板</button>
             <button id="checkSourceBtn" onclick="showModal('chekspeed')">测速校验</button>
             <button id="saveSourceBtn" onclick="saveLiveSourceInfo()">保存</button>
@@ -416,18 +416,18 @@
                         <th style='width: 10%'>频道名</th>
                         <th style='width: 20%'>直播地址</th>
                         <th style='width: 15%'>台标地址<input type="checkbox" id="live_tvg_logo_enable" 
-                            value="<?php echo isset($Config['live_tvg_logo_enable']) ? $Config['live_tvg_logo_enable'] : 1; ?>" 
-                            <?php echo (@$Config['live_tvg_logo_enable'] == 1) ? 'checked' : ''; ?>
+                            value="<?= isset($Config['live_tvg_logo_enable']) ? $Config['live_tvg_logo_enable'] : 1; ?>" 
+                            <?= (@$Config['live_tvg_logo_enable'] == 1) ? 'checked' : ''; ?>
                             onchange="this.value = this.checked ? 1 : 0;">
                         </th>
                         <th style='width: 9%'>tvg-id<input type="checkbox" id="live_tvg_id_enable" 
-                            value="<?php echo isset($Config['live_tvg_id_enable']) ? $Config['live_tvg_id_enable'] : 1; ?>" 
-                            <?php echo (@$Config['live_tvg_id_enable'] == 1) ? 'checked' : ''; ?>
+                            value="<?= isset($Config['live_tvg_id_enable']) ? $Config['live_tvg_id_enable'] : 1; ?>" 
+                            <?= (@$Config['live_tvg_id_enable'] == 1) ? 'checked' : ''; ?>
                             onchange="this.value = this.checked ? 1 : 0;">
                         </th>
                         <th style='width: 12%'>tvg-name<input type="checkbox" id="live_tvg_name_enable" 
-                            value="<?php echo isset($Config['live_tvg_name_enable']) ? $Config['live_tvg_name_enable'] : 1; ?>" 
-                            <?php echo (@$Config['live_tvg_name_enable'] == 1) ? 'checked' : ''; ?>
+                            value="<?= isset($Config['live_tvg_name_enable']) ? $Config['live_tvg_name_enable'] : 1; ?>" 
+                            <?= (@$Config['live_tvg_name_enable'] == 1) ? 'checked' : ''; ?>
                             onchange="this.value = this.checked ? 1 : 0;">
                         </th>
                         <th style='width: 45px'>分辨率</th>
@@ -527,15 +527,15 @@
             <div class="column" style="display: flex; align-items: center;">
                 <label>最低分辨率：</label>
                 <input type="tel" id="min_resolution_width" placeholder="宽度" style="text-align: center;" 
-                    value="<?php echo $Config['min_resolution_width'] ?? 0; ?>">
+                    value="<?= $Config['min_resolution_width'] ?? 0; ?>">
                 <span>×</span>
                 <input type="tel" id="min_resolution_height" placeholder="高度" style="text-align: center;" 
-                    value="<?php echo $Config['min_resolution_height'] ?? 0; ?>">
+                    value="<?= $Config['min_resolution_height'] ?? 0; ?>">
             </div>
             <div class="column" style="display: flex; align-items: center;">
                 <label for="urls_limit">单频道接口数量：</label>
                 <input type="tel" id="urls_limit" placeholder="默认不限制" style="text-align: center;" 
-                    value="<?php echo $Config['urls_limit'] ?? 0; ?>">
+                    value="<?= $Config['urls_limit'] ?? 0; ?>">
             </div>
         </div>
 
@@ -559,8 +559,8 @@
                 <label for="check_speed_interval_factor">间隔周期倍率：</label>
                 <select id="check_speed_interval_factor" name="check_speed_interval_factor" required>
                     <?php for ($i = 1; $i <= 10; $i++): ?>
-                        <option value="<?php echo $i ?>" <?php echo ($Config['check_speed_interval_factor'] ?? 1) == $i ? 'selected' : '' ?>>
-                            <?php echo $i ?>
+                        <option value="<?= $i ?>" <?= ($Config['check_speed_interval_factor'] ?? 1) == $i ? 'selected' : '' ?>>
+                            <?= $i ?>
                         </option>
                     <?php endfor; ?>
                 </select>
@@ -681,8 +681,8 @@
                 </select>
             </div>
             <div class="column">
-                <label for="token_range"><span class="blue-span" id="change_token_span" onclick="changeTokenUA('token', `<?php echo $Config['token']; ?>`)">Token</span> 范围：</label>
-                <select id="token_range" name="token_range" required onchange="showTokenRangeMessage(`<?php echo $Config['token']; ?>`, `<?php echo $serverUrl; ?>`)">
+                <label for="token_range"><span class="blue-span" id="change_token_span" onclick="changeTokenUA('token', `<?= $Config['token']; ?>`)">Token</span> 范围：</label>
+                <select id="token_range" name="token_range" required onchange="showTokenRangeMessage(`<?= $Config['token']; ?>`, `<?= $serverUrl; ?>`, `<?= $modRewrite ?>`)">
                     <option value="0" <?php if (@$Config['token_range'] == 0) echo 'selected'; ?>>无</option>
                     <option value="1" <?php if (($Config['token_range'] ?? 1) == 1) echo 'selected'; ?>>直播源</option>
                     <option value="2" <?php if (@$Config['token_range'] == 2) echo 'selected'; ?>>EPG</option>
@@ -690,7 +690,7 @@
                 </select>
             </div>
             <div class="column">
-                <label for="user_agent_range"><span class="blue-span" id="change_ua_span" onclick="changeTokenUA('user_agent', `<?php echo $Config['user_agent']; ?>`)">User-Agent</span> 范围：</label>
+                <label for="user_agent_range"><span class="blue-span" id="change_ua_span" onclick="changeTokenUA('user_agent', `<?= $Config['user_agent']; ?>`)">User-Agent</span> 范围：</label>
                 <select id="user_agent_range" name="user_agent_range" required">
                     <option value="0" <?php if (@$Config['user_agent_range'] == 0) echo 'selected'; ?>>无</option>
                     <option value="1" <?php if (@$Config['user_agent_range'] == 1) echo 'selected'; ?>>直播源</option>
@@ -729,6 +729,45 @@
         <!-- 第四行 -->
         <div class="row">
             <div class="column">
+                <label for="target_time_zone">时区转换：</label>
+                <select id="target_time_zone" name="target_time_zone" required>
+                  <?php
+                  $timezones = [
+                    '0'     => '关闭',
+                    '+0800' => 'UTC+0800',
+                    '-1200' => 'UTC-1200',
+                    '-1100' => 'UTC-1100',
+                    '-1000' => 'UTC-1000',
+                    '-0900' => 'UTC-0900',
+                    '-0800' => 'UTC-0800',
+                    '-0700' => 'UTC-0700',
+                    '-0600' => 'UTC-0600',
+                    '-0500' => 'UTC-0500',
+                    '-0400' => 'UTC-0400',
+                    '-0300' => 'UTC-0300',
+                    '-0200' => 'UTC-0200',
+                    '-0100' => 'UTC-0100',
+                    '+0000' => 'UTC+0000',
+                    '+0100' => 'UTC+0100',
+                    '+0200' => 'UTC+0200',
+                    '+0300' => 'UTC+0300',
+                    '+0400' => 'UTC+0400',
+                    '+0500' => 'UTC+0500',
+                    '+0600' => 'UTC+0600',
+                    '+0700' => 'UTC+0700',
+                    '+0900' => 'UTC+0900',
+                    '+1000' => 'UTC+1000',
+                    '+1100' => 'UTC+1100',
+                    '+1200' => 'UTC+1200',
+                  ];
+                  foreach ($timezones as $offset => $label) {
+                    $selected = (($Config['target_time_zone'] ?? '0') === $offset) ? ' selected' : '';
+                    echo "<option value=\"$offset\"$selected>$label</option>";
+                  }
+                  ?>
+                </select>
+            </div>
+            <div class="column">
                 <label for="ip_list_mode"><span class="blue-span" onclick="showIpModal()">IP 列表</span>：</label>
                 <select id="ip_list_mode" name="ip_list_mode" required onchange="showIpModal()">
                     <option value="0" <?php if (@$Config['ip_list_mode'] == 0) echo 'selected'; ?>>不使用</option>
@@ -743,6 +782,10 @@
                     <option value="0" <?php if (@$Config['check_update'] == 0) echo 'selected'; ?>>否</option>
                 </select>
             </div>
+        </div>
+
+        <!-- 第五行 -->
+        <div class="row">
             <div class="column">
                 <label for="debug_mode">调试模式：</label>
                 <select id="debug_mode" name="debug_mode" required onchange="debugMode(this)">
@@ -750,16 +793,10 @@
                     <option value="0" <?php if (($Config['debug_mode'] ?? 0) == 0) echo 'selected'; ?>>否</option>
                 </select>
             </div>
-        </div>
-
-        <!-- 第五行 -->
-        <div class="row">
             <div class="column">
                 <a href="assets/tinyfilemanager/index.php?p=data&edit=customSource.php&env=ace" target="_blank" class="blue-span">
                     编辑自定义数据源
                 </a>                  
-            </div>
-            <div class="column">
             </div>
             <div class="column">
             </div>

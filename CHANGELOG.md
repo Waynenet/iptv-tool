@@ -1,3 +1,13 @@
+## 2025-08-11
+1. ✨**新增**：时区转换（更多设置 - 时区转换，默认关闭）
+2. ⚡**优化**：时区修正逻辑
+   - ⚠️ 移除 `#TZ=/#timezone=` 选项
+   - ⚠️ 使用形如 `#TO=+0300` 或 `#timeoffset` 修正**时间偏移量**
+3. ⚡**优化**：频道别名匹配逻辑（#103）
+4. ⚡**优化**：非 `Docker` 用户地址提示
+5. ⚡**优化**：使用说明新增「直播源管理使用示例」
+6. ⚡**优化**：TXT 源分组判断逻辑
+
 ## 2025-07-04
 1. ✨**新增**：直播源跟随 EPG 同步更新支持所有配置
 2. ✨**新增**：更新 EPG 时统计跳过节目数量
@@ -5,8 +15,7 @@
 4. ⚡**优化**：直播源台标匹配逻辑
 5. ⚡**优化**：清除直播源缓存数据后重新解析
 6. ⚡**优化**：README.md
-7. ⚡**优化**：[捐赠鸣谢列表](https://gitee.com/taksssss/EPG-Server/blob/main/DONATIONS.md)
-8. 🐛**修复**：数据丢失时直播源配置显示异常
+7. 🐛**修复**：数据丢失时直播源配置显示异常
 
 ## 2025-06-28
 1. ✨**新增**：支持管理多套直播源（新建、另存、删除）
@@ -18,8 +27,7 @@
 7. ⚡**优化**：EPG 下载失败时提示错误信息
 8. ⚡**优化**：直播源测速逻辑，避免进行多次测速
 9. ⚡**优化**：超长直播地址显示效果
-10. ⚡**优化**：[捐赠鸣谢列表](https://gitee.com/taksssss/EPG-Server/blob/main/DONATIONS.md)
-11. 🐛**修复**：「频道匹配结果」繁简匹配显示异常（#93）
+10. 🐛**修复**：「频道匹配结果」繁简匹配显示异常（#93）
 
 ## 2025-06-14
 
@@ -27,7 +35,6 @@
 2. ✨**新增**：台标模糊匹配接口（可用于 `tvbox` 壳：`"logo":"http://{服务器IP地址}:5678/index.php?ch={name}&type=icon"`）
 3. ⚡**优化**：关闭繁體转简体时进行提醒
 4. ⚡**优化**：README.md
-5. ⚡**优化**：[捐赠鸣谢列表](https://gitee.com/taksssss/EPG-Server/blob/main/DONATIONS.md)
    
 ## 2025-06-11.fix
 
@@ -52,9 +59,8 @@
 9. ⚡**优化**：`index.php` 默认返回 `t.xml.gz` 文件
 10. ⚡**优化**：“限定频道列表”改为“匹配频道列表”（生成 xml 时使用该信息进行模糊匹配，可用于繁体频道匹配，更多设置 - 匹配频道列表）
 11. ⚡**优化**：使用说明
-12. ⚡**优化**：[捐赠鸣谢列表](https://gitee.com/taksssss/EPG-Server/blob/main/DONATIONS.md)
-13. 🐛**修复**：Token、User-Agent 空行导致限制失效
-14. 🐛**修复**：缓存服务异常
+12. 🐛**修复**：Token、User-Agent 空行导致限制失效
+13. 🐛**修复**：缓存服务异常
 
 ## 2025-06-01
 
@@ -74,11 +80,10 @@
 14. ⚡**优化**：更新 EPG 时清理过期访问日志
 15. ⚡**优化**：移除DIYP、超级直播的 `sub-title` 字段
 16. ⚡**优化**：使用说明
-17. ⚡**优化**：[捐赠鸣谢列表](https://gitee.com/taksssss/EPG-Server/blob/main/DONATIONS.md)
-18. 🐛**修复**：繁体频道别名匹配异常
-19. 🐛**修复**：以 `[]` 开头/结尾的频道别名识别错误
-20. 🐛**修复**：EPG、直播源黑白名单大小写匹配异常
-21. 🐛**修复**：Memcache 缓存导致内外网台标地址异常
+17. 🐛**修复**：繁体频道别名匹配异常
+18. 🐛**修复**：以 `[]` 开头/结尾的频道别名识别错误
+19. 🐛**修复**：EPG、直播源黑白名单大小写匹配异常
+20. 🐛**修复**：Memcache 缓存导致内外网台标地址异常
 
 ## 2025-05-20
 
@@ -93,20 +98,18 @@
 9. ⚡**优化**：移除 DIYP、超级直播接口的 `source` 字段
 10. ⚡**优化**：部分页面样式、页面标题
 11. ⚡**优化**：使用说明
-12. ⚡**优化**：[捐赠入口](https://gitee.com/taksssss/EPG-Server#-buy-me-a-coffee)
-13. ⚡**优化**：[捐赠鸣谢列表](https://gitee.com/taksssss/EPG-Server/blob/main/DONATIONS.md)
+12. ⚡**优化**：[捐赠入口](https://gitee.com/taksssss/iptv-tool#-buy-me-a-coffee)
 
 ## 2025-05-13
 
 1. ✨**新增**：调试模式（更多设置 - 调试模式）
 2. ✨**新增**：直播源黑白名单支持直播地址（URL #FT=频道名1, 直播地址2）
-3. ✨**新增**：页面底部[鸣谢列表](https://gitee.com/taksssss/EPG-Server/blob/main/DONATIONS.md)
+3. ✨**新增**：页面底部[鸣谢列表](https://gitee.com/taksssss/iptv-tool/blob/main/DONATIONS.md)
 4. ⚡**优化**：更新日志节目数量从天数改为条数
 5. ⚡**优化**：部分页面样式
 6. ⚡**优化**：使用说明
-7. ⚡**优化**：[捐赠鸣谢列表](https://gitee.com/taksssss/EPG-Server/blob/main/DONATIONS.md)
-8. 🐛**修复**：开关同步测速校验后，需重启定时任务才生效
-9. 🐛**修复**：设置多个 Token 时访问地址显示异常
+7. 🐛**修复**：开关同步测速校验后，需重启定时任务才生效
+8. 🐛**修复**：设置多个 Token 时访问地址显示异常
 
 ## 2025-05-10
 
@@ -120,8 +123,7 @@
 8. ⚡**优化**：移除 xmltv 文件中的 `icon` 字段
 8. ⚡**优化**：定时任务日志
 9.  ⚡**优化**：使用说明
-10. ⚡**优化**：[捐赠鸣谢列表](https://gitee.com/taksssss/EPG-Server/blob/main/DONATIONS.md)
-11. 🐛**修复**：生成 xmltv 文件时部分字段多次转义（#88）
+10. 🐛**修复**：生成 xmltv 文件时部分字段多次转义（#88）
 
 ## 2025-04-29
 
@@ -134,7 +136,6 @@
 7. ⚡**优化**：清除直播源修改记录逻辑
 8.  ⚡**优化**：EPG 编码兼容性
 9.  ⚡**优化**：使用说明
-10. ⚡**优化**：[捐赠鸣谢列表](https://gitee.com/taksssss/EPG-Server/blob/main/DONATIONS.md)
 
 ## 2025-04-14
 
@@ -162,9 +163,9 @@
 3. ✨**新增**：测速校验时设置最低分辨率
 4. ✨**新增**：测速校验时设置单个频道接口数量
 5. ✨**新增**：测速校验后按响应速度排序
-6. ✨**新增**：[捐赠入口](https://gitee.com/taksssss/EPG-Server#-buy-me-a-coffee)
-7. ✨**新增**：[捐赠鸣谢列表](https://gitee.com/taksssss/EPG-Server/blob/main/DONATIONS.md)
-8. ⚡**优化**：[安装、更新指令](https://gitee.com/taksssss/EPG-Server#-%E9%83%A8%E7%BD%B2%E6%AD%A5%E9%AA%A4)（建议都用新的指令，下次升级不需要导入数据。本次需要！）
+6. ✨**新增**：[捐赠入口](https://gitee.com/taksssss/iptv-tool#-buy-me-a-coffee)
+7. ✨**新增**：[捐赠鸣谢列表](https://gitee.com/taksssss/iptv-tool/blob/main/DONATIONS.md)
+8. ⚡**优化**：[安装、更新指令](https://gitee.com/taksssss/iptv-tool#-%E9%83%A8%E7%BD%B2%E6%AD%A5%E9%AA%A4)（建议都用新的指令，下次升级不需要导入数据。本次需要！）
 9. ⚡**优化**：CCTV5+ 匹配逻辑，避免误伤其他频道
 10. ⚡**优化**：保存台标时清理 Memcached ，避免缓存影响
 11. ⚡**优化**：M3U 识别关键字
