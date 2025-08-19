@@ -5,6 +5,8 @@ on:
   push:               # 允许推送触发
     branches:
       - main
+  repository_dispatch:  # 支持由上游同步触发
+    types: [sync_complete]
 
 jobs:
   build:
@@ -25,19 +27,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-  
-      - name: Log in to Tencent Cloud Container Registry    
-        uses: docker/login-action@v3 # 登录 腾讯云容器镜像站
-        with:
-          registry: ccr.ccs.tencentyun.com
-          username: ${{ secrets.TENCENT_CCR_USERNAME }}
-          password: ${{ secrets.TENCENT_CCR_PASSWORD }}
           
       - name: Fetch existing tags from Docker Hub
         id: get_tags
         run: |
           DATE_TAG=$(date +"%y.%m") # 生成当前月份的标签，如24.08
-          TAGS=$(curl -s "https://hub.docker.com/v2/repositories/taksss/php-epg/tags/?page_size=100" | jq -r '.results[].name') # 获取 Docker Hub 中现有的标签
+          TAGS=$(curl -s "https://hub.docker.com/v2/repositories/wayne3301/php-epg/tags/?page_size=100" | jq -r '.results[].name') # 获取 Docker Hub 中现有的标签
           COUNT=0
           for tag in $TAGS; do
             if [[ $tag == $DATE_TAG* ]]; then
@@ -70,7 +65,5 @@ jobs:
           file: ./Dockerfile
           push: true
           platforms: linux/amd64, linux/arm64, linux/arm/v7
-          tags: taksss/php-epg:${{ env.TAG }}, 
-                taksss/php-epg:latest, 
-                ccr.ccs.tencentyun.com/taksss/php-epg:${{ env.TAG }}, 
-                ccr.ccs.tencentyun.com/taksss/php-epg:latest
+          tags: wayne3301/php-epg:${{ env.TAG }}, 
+                wayne3301/php-epg:latest
