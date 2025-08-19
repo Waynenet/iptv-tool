@@ -1,0 +1,92 @@
+name: Upstream Sync
+
+permissions:
+  contents: write
+
+on:
+  schedule:
+    - cron: "44 21 * * *" # 每日定时执行
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  sync_latest_from_upstream:
+    name: Sync latest commits from upstream repo
+    runs-on: ubuntu-latest
+    if: ${{ github.event.repository.fork }}
+
+    steps:
+      # Step 1: 检出目标仓库代码
+      - name: Checkout target repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # 获取完整的提交历史，确保 rebase 能正常工作
+
+      # Step 2: 添加上游仓库并获取更新
+      - name: Add upstream and fetch
+        run: |
+          git remote -v
+          if ! git remote | grep -q "upstream"; then
+            git remote add upstream https://github.com/taksssss/EPG-Server.git
+          fi
+          git fetch upstream main --tags
+
+      # Step 3: 设置 Git 用户信息
+      - name: Set Git user identity
+        run: |
+          git config --global user.name "Waynenet"
+          git config --global user.email "54445994+Waynenet@users.noreply.github.com"
+
+      # Step 4: 检测是否有上游更新（使用提交差异检测）
+      - name: Check for upstream changes
+        id: check_update
+        run: |
+          git checkout main
+          # 统计 upstream/main 相对于 main 有多少新提交
+          NEW_COMMITS=$(git log main..upstream/main --oneline | wc -l)
+
+          echo "New commits detected: $NEW_COMMITS"
+          if [ "$NEW_COMMITS" -gt 0 ]; then
+            echo "HAS_UPDATE=true" >> $GITHUB_ENV
+          else
+            echo "HAS_UPDATE=false" >> $GITHUB_ENV
+          fi
+
+      # Step 5: 使用 rebase 同步上游改动，避免生成多余的 merge commit
+      - name: Rebase upstream changes
+        if: env.HAS_UPDATE == 'true'
+        run: |
+          echo "Starting rebase with upstream changes..."
+          if ! git rebase upstream/main; then
+            echo "::error::Rebase conflict detected. Aborting rebase."
+            git rebase --abort
+            exit 1
+          fi
+
+      # Step 6: 强制推送更新后的代码到目标仓库
+      - name: Force push to target branch
+        if: env.HAS_UPDATE == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          echo "Force pushing updates to origin main..."
+          git push origin main --force
+
+      # Step 7: 触发 Docker Image CI（仅在有更新时触发）
+      - name: Trigger Docker Image CI
+        if: env.HAS_UPDATE == 'true' && success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          echo "Triggering Docker Image CI workflow..."
+          curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.everest-preview+json" \
+            https://api.github.com/repos/${{ github.repository }}/dispatches \
+            -d '{"event_type": "sync_complete"}'
+
+      # Step 8: 同步失败时的检查与提示
+      - name: Sync check (failure)
+        if: failure()
+        run: |
+          echo "::error::Rebase failed. Manual intervention is required."
+          echo "Please follow the project README.md for manual sync instructions."
+          exit 1
